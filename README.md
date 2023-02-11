@@ -10,4 +10,4 @@ Download now and simplify your note-taking experience!
 </a>
 
 # Screen Design
-  <img src="https://github.com/brijesh1902/A1_Music_Player/blob/master/screenshots/graphic_design.png?raw=true" alt="Graphic Design">
+  <img src="https://github.com/brijesh1902/My-Notes/blob/master/screenshots/1.png" alt="Screen 1">
