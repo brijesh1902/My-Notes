@@ -11,3 +11,14 @@ Download now and simplify your note-taking experience!
 
 # Screen Design
   <img src="https://github.com/brijesh1902/My-Notes/blob/master/screenshots/1.png" alt="Screen 1">
+  <div class="row">
+  <div class="column">
+    <img src="https://github.com/brijesh1902/My-Notes/blob/master/screenshots/1.png" alt="Screen 1" style="width:100%">
+  </div>
+  <div class="column">
+    <img src="https://github.com/brijesh1902/My-Notes/blob/master/screenshots/2.png" alt="Screen 2" style="width:100%">
+  </div>
+  <div class="column">
+    <img src="https://github.com/brijesh1902/My-Notes/blob/master/screenshots/3.png" alt="Screen 3" style="width:100%">
+  </div>
+</div>
