@@ -2,6 +2,7 @@ package com.brizzs.mynotes.adapter
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -24,16 +25,6 @@ class NotesAdapter : ListAdapter<Notes, NotesAdapter.ItemViewHolder>(DiffCallbac
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
-    fun filter(search: String) {
-        val list = ArrayList<Notes>()
-        for (item in currentList){
-            if (item.title?.lowercase()?.contains(search.lowercase()) == true || item.notes?.lowercase()?.contains(search.lowercase()) == true)
-                list.add(item)
-            submitList(list)
-        }
-    }
-
 
     class ItemViewHolder(private val binding : ViewNotesBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SimpleDateFormat")

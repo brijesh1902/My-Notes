@@ -22,13 +22,14 @@ import kotlin.random.Random
 
 class AddNotesActivity : AppCompatActivity() {
 
+    private val TAG = "AddNotesActivity"
+
     lateinit var bindings : ActivityAddNotesBinding
     lateinit var notes: Notes
     var isUpdate = false
     private lateinit var viewModel : NotesViewModel
     private lateinit var title : String
     private lateinit var note : String
-    private lateinit var format : SimpleDateFormat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +47,7 @@ class AddNotesActivity : AppCompatActivity() {
             isUpdate = true
 
         } catch (e : Exception) {
-            e.printStackTrace()
+            Log.e(TAG, "onCreate: "+e.message )
         }
 
     }
@@ -57,8 +58,12 @@ class AddNotesActivity : AppCompatActivity() {
         title = bindings.etTitle.text.toString()
         note = bindings.etNotes.text.toString()
 
-        if (isUpdate) viewModel.updateNote(Notes(notes.id, title, note, getTimestamp(), notes.randomColor))
+        if (title.isNotEmpty() || note.isNotEmpty()) {
+            if (isUpdate) viewModel.updateNote(Notes(notes.id, title, note, getTimestamp(), notes.randomColor))
+            else viewModel.insertNote(Notes(null, title, note, getTimestamp(), randomColor()))
 
+            finish()
+        }
         super.onBackPressed()
 
     }
@@ -72,7 +77,11 @@ class AddNotesActivity : AppCompatActivity() {
         bindings.back.setOnClickListener{
             title = bindings.etTitle.text.toString()
             note = bindings.etNotes.text.toString()
-            if (isUpdate) viewModel.updateNote(Notes(notes.id, title, note, getTimestamp(), notes.randomColor))
+            if (title.isNotEmpty() || note.isNotEmpty()) {
+                if (isUpdate) viewModel.updateNote(Notes(notes.id, title, note, getTimestamp(), notes.randomColor))
+                else viewModel.insertNote(Notes(null, title, note, getTimestamp(), randomColor()))
+
+            }
             finish()
         }
 

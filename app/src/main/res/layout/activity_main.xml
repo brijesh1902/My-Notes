@@ -11,23 +11,22 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="1dp"
         app:cardElevation="8dp"
-        app:cardBackgroundColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
+
         <SearchView
             android:id="@+id/searchView"
-            android:theme="@style/AppSearchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:queryHint="@string/search_notes"
             android:iconifiedByDefault="false"
             android:queryBackground="@color/white"
-             />
+            android:queryHint="@string/search_notes"
+            android:theme="@style/AppSearchView" />
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -42,6 +41,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card" />
+
+    <TextView
+        android:id="@+id/tv_not"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="@string/no_notes"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
