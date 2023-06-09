@@ -13,6 +13,13 @@ import com.brizzs.mynotes.models.Notes
 import com.brizzs.mynotes.ui.AddNotesActivity
 import com.brizzs.mynotes.utils.CURRENT_NOTE
 import com.brizzs.mynotes.utils.DATE_TIME_FORMAT
+import com.brizzs.mynotes.utils.getMarkWonBuilder
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.MarkwonVisitor
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
+import io.noties.markwon.ext.tasklist.TaskListPlugin
+import org.commonmark.node.SoftLineBreak
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
@@ -31,7 +38,8 @@ class NotesAdapter : ListAdapter<Notes, NotesAdapter.ItemViewHolder>(DiffCallbac
         fun bind(notes: Notes) {
 
             binding.title.text = notes.title
-            binding.notes.text = notes.notes
+//            binding.notes.text = notes.notes
+            getMarkWonBuilder(itemView.context).setMarkdown(binding.notes, notes.notes.toString())
 
             val format = SimpleDateFormat(DATE_TIME_FORMAT)
 
@@ -41,6 +49,7 @@ class NotesAdapter : ListAdapter<Notes, NotesAdapter.ItemViewHolder>(DiffCallbac
 
             binding.notesCard.setOnClickListener {
                 itemView.context.startActivity(Intent(itemView.context, AddNotesActivity::class.java)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .putExtra(CURRENT_NOTE, notes))
             }
         }

@@ -3,20 +3,18 @@ package com.brizzs.mynotes.ui
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Note
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.brizzs.mynotes.R
 import com.brizzs.mynotes.databinding.ActivityAddNotesBinding
-import com.brizzs.mynotes.databinding.ActivityMainBinding
 import com.brizzs.mynotes.models.Notes
 import com.brizzs.mynotes.utils.CURRENT_NOTE
+import com.brizzs.mynotes.utils.getMarkWonBuilder
 import com.brizzs.mynotes.utils.getTimestamp
 import com.brizzs.mynotes.viewModel.NotesViewModel
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
@@ -24,7 +22,7 @@ class AddNotesActivity : AppCompatActivity() {
 
     private val TAG = "AddNotesActivity"
 
-    lateinit var bindings : ActivityAddNotesBinding
+    lateinit var binding : ActivityAddNotesBinding
     lateinit var notes: Notes
     var isUpdate = false
     private lateinit var viewModel : NotesViewModel
@@ -33,16 +31,16 @@ class AddNotesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindings = ActivityAddNotesBinding.inflate(layoutInflater)
-        setContentView(bindings.root)
+        binding = ActivityAddNotesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(NotesViewModel::class.java)
 
         try {
             notes = intent.getSerializableExtra(CURRENT_NOTE) as Notes
 
-            bindings.etTitle.setText(notes.title)
-            bindings.etNotes.setText(notes.notes)
+            binding.etTitle.setText(notes.title)
+            binding.etNotes.renderMD(notes.notes.toString())
 
             isUpdate = true
 
@@ -55,8 +53,8 @@ class AddNotesActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
 
-        title = bindings.etTitle.text.toString()
-        note = bindings.etNotes.text.toString()
+        title = binding.etTitle.text.toString()
+        note = binding.etNotes.getMD()
 
         if (title.isNotEmpty() || note.isNotEmpty()) {
             if (isUpdate) viewModel.updateNote(Notes(notes.id, title, note, getTimestamp(), notes.randomColor))
@@ -64,7 +62,6 @@ class AddNotesActivity : AppCompatActivity() {
 
             finish()
         }
-        super.onBackPressed()
 
     }
 
@@ -72,28 +69,23 @@ class AddNotesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (isUpdate) bindings.delete.visibility = View.VISIBLE
+        binding.etNotes.setStylesBar(binding.stylesbar)
 
-        bindings.back.setOnClickListener{
-            title = bindings.etTitle.text.toString()
-            note = bindings.etNotes.text.toString()
-            if (title.isNotEmpty() || note.isNotEmpty()) {
-                if (isUpdate) viewModel.updateNote(Notes(notes.id, title, note, getTimestamp(), notes.randomColor))
-                else viewModel.insertNote(Notes(null, title, note, getTimestamp(), randomColor()))
+        if (isUpdate) binding.delete.visibility = View.VISIBLE
 
-            }
-            finish()
+        binding.back.setOnClickListener{
+            onBackPressed()
         }
 
-        bindings.delete.setOnClickListener{
+        binding.delete.setOnClickListener{
             viewModel.deleteNote(notes)
             finish()
         }
 
-        bindings.save.setOnClickListener{
+        binding.save.setOnClickListener{
 
-            title = bindings.etTitle.text.toString()
-            note = bindings.etNotes.text.toString()
+            title = binding.etTitle.text.toString()
+            note = binding.etNotes.getMD()
 
             if (title.isNotEmpty() || note.isNotEmpty()) {
                 if (isUpdate) viewModel.updateNote(Notes(notes.id, title, note, getTimestamp(), notes.randomColor))
