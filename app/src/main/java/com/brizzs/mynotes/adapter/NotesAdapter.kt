@@ -38,7 +38,6 @@ class NotesAdapter : ListAdapter<Notes, NotesAdapter.ItemViewHolder>(DiffCallbac
         fun bind(notes: Notes) {
 
             binding.title.text = notes.title
-//            binding.notes.text = notes.notes
             getMarkWonBuilder(itemView.context).setMarkdown(binding.notes, notes.notes.toString())
 
             val format = SimpleDateFormat(DATE_TIME_FORMAT)
@@ -48,6 +47,11 @@ class NotesAdapter : ListAdapter<Notes, NotesAdapter.ItemViewHolder>(DiffCallbac
             binding.notesCard.setCardBackgroundColor(itemView.resources.getColor(notes.randomColor, null))
 
             binding.notesCard.setOnClickListener {
+                itemView.context.startActivity(Intent(itemView.context, AddNotesActivity::class.java)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(CURRENT_NOTE, notes))
+            }
+            binding.notes.setOnClickListener {
                 itemView.context.startActivity(Intent(itemView.context, AddNotesActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .putExtra(CURRENT_NOTE, notes))

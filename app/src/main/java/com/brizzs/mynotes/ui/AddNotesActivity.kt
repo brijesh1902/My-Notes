@@ -57,11 +57,10 @@ class AddNotesActivity : AppCompatActivity() {
         note = binding.etNotes.getMD()
 
         if (title.isNotEmpty() || note.isNotEmpty()) {
-            if (isUpdate) viewModel.updateNote(Notes(notes.id, title, note, getTimestamp(), notes.randomColor))
+            if (isUpdate) viewModel.updateNote(Notes(notes.id, title, note, notes.date, notes.randomColor))
             else viewModel.insertNote(Notes(null, title, note, getTimestamp(), randomColor()))
-
-            finish()
         }
+        finish()
 
     }
 
