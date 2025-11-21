@@ -1,18 +1,19 @@
 package com.brizzs.mynotes.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.brizzs.mynotes.adapter.NotesAdapter
 import com.brizzs.mynotes.databinding.ActivityMainBinding
 import com.brizzs.mynotes.models.Notes
 import com.brizzs.mynotes.utils.InAppUpdate
 import com.brizzs.mynotes.viewModel.NotesViewModel
-import kotlinx.coroutines.flow.merge
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +27,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         bindings = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindings.root)
+
+        // Look for and REMOVE or comment out this block:
+        ViewCompat.setOnApplyWindowInsetsListener(
+            bindings.root,
+            OnApplyWindowInsetsListener { v: View?, insets: WindowInsetsCompat? ->
+                // This code typically applies padding equal to the system bar height
+                // to prevent content from going behind the bars.
+                val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+                // Removing the logic that sets padding here will also help disable the effect.
+                v!!.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            })
 
         inAppUpdate = InAppUpdate(this)
         viewModel = ViewModelProvider(this).get(NotesViewModel::class.java)

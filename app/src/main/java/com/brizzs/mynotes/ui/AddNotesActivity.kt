@@ -7,6 +7,9 @@ import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.brizzs.mynotes.R
 import com.brizzs.mynotes.databinding.ActivityAddNotesBinding
@@ -33,6 +36,17 @@ class AddNotesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddNotesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // Look for and REMOVE or comment out this block:
+        ViewCompat.setOnApplyWindowInsetsListener(
+            binding.root,
+            OnApplyWindowInsetsListener { v: View?, insets: WindowInsetsCompat? ->
+                // This code typically applies padding equal to the system bar height
+                // to prevent content from going behind the bars.
+                val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+                // Removing the logic that sets padding here will also help disable the effect.
+                v!!.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            })
 
         viewModel = ViewModelProvider(this).get(NotesViewModel::class.java)
 
